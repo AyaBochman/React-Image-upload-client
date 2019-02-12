@@ -40,14 +40,16 @@ class UploadImage extends Component {
 
     this.state = {
       selectedFile: null,
-      tags: null
+      tags: null,
+      displayFile: null
  
     };
 
   }
   handleChange = e =>{
       this.setState({
-          selectedFile: e.target.files[0]
+          selectedFile: e.target.files[0],
+          displayFile: URL.createObjectURL(e.target.files[0])
       })
       console.log(e.target.files[0].name)
   }
@@ -63,10 +65,10 @@ class UploadImage extends Component {
 
   handleUpload = () =>{
     let tags = this.state.tags
-    // let tags = theTags.split(",")
+
     console.log(tags)
     const data = new FormData()
-    // console.log(this.state.selectedFile.name)
+ 
     console.log(data)
     data.append('file', this.state.selectedFile, this.state.selectedFile.name)
     data.append('tags', tags)
@@ -74,6 +76,7 @@ class UploadImage extends Component {
     axios
       .post(`http://localhost:2200/pictures/uploadImage`, data)
       .then(res => {
+        
         console.log(res.statusText)
       })
   }
@@ -88,8 +91,10 @@ class UploadImage extends Component {
         <h2> Add New Image </h2>
         <form enctype="multipart/form-data">
         <input type="file" onChange={this.handleChange}/>
-        <Button variant="contained" color="primary" className={classes.button}
-        onClick={this.handleUpload}>Upload</Button>
+        <br/>
+        <img className={"image-display"} src={this.state.displayFile}/>
+        <br/>
+    
         </form>
   <br/>
         <TextField
@@ -101,8 +106,9 @@ class UploadImage extends Component {
           onChange={this.handleInputChange}
           margin="normal"
         />
-
-      
+  <br/>
+          <Button variant="contained" color="primary" className={classes.button}
+        onClick={this.handleUpload}>Upload</Button>
       </div>
     );
   }

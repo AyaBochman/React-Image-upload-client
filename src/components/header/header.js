@@ -50,6 +50,7 @@ class Header extends Component {
  
     return (
       <div>
+      <div className={"container"}>
         <Navbar>
           {/* <Navbar.Header> */}
   
@@ -77,6 +78,7 @@ class Header extends Component {
  
          
         </Navbar>
+        </div>
       </div>
     );
   }

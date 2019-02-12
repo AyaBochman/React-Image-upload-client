@@ -33,6 +33,7 @@ const styles = theme => ({
   },
   card: {
     maxWidth: 400,
+    height: 250
   },
   textField: {
     position: "absolute",
@@ -59,11 +60,16 @@ class SearchImage extends Component {
 
     this.state = {
       search: null,
-      searchResult: null
+      searchResult: null,
+      loading: false
 
     };
 
   }
+
+  // componentDidMount(){
+
+  // }
 
   handleInputChange = e => {
 
@@ -74,6 +80,10 @@ class SearchImage extends Component {
   };
 
   handleSearch = () => {
+    this.setState({
+      loading: true,
+      searchResult: null
+    })
     let search = this.state.search;
     console.log("your search", search)
     axios
@@ -81,11 +91,15 @@ class SearchImage extends Component {
       .then(res => {
         console.log("result from server")
         let searchResult = res.data
-        this.setState({
+        console.log(searchResult)
+        setTimeout(() => {
+          this.setState({
           searchResult: searchResult
         })
-        console.log(searchResult)
+        }, 1500);
+        
       })
+
   }
 
 
@@ -107,7 +121,7 @@ class SearchImage extends Component {
                 name="search"
                 label="Search"
                 className={classes.textField}
-                //   value={this.state.userId}
+           
                 onChange={this.handleInputChange}
                 margin="normal"
               />
@@ -122,18 +136,16 @@ class SearchImage extends Component {
         <br/>
         <Button variant="contained" color="secondary" className={classes.button}
           onClick={this.handleSearch}>Search</Button>
-        <div className={"container"}>
 
+        <div className={"container"}>
+{!this.state.searchResult && this.state.loading && <div className={"lds-roller"}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>}
           <div className={"row"}>
+          
             {this.state.searchResult && this.state.searchResult.map((searchedItem, index) => {
-              //   return <img src={`searchedItem.path`}></img>
+            
               let tags = searchedItem.tags
-              let displayTags = tags.join("#")
-              console.log(searchedItem.path)
-              console.log(displayTags)
-              // <div key={index}>tags:{displayTags}</div> 
-              // return <img key={index} src={`${imgUrl}/${searchedItem.path}`} />
-              return <div className={"col-sm-3"}>
+  
+              return <div key={index} className={"col-sm-3"}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.media}
@@ -141,7 +153,11 @@ class SearchImage extends Component {
 
                   />
                   <CardContent>
-                    {displayTags}
+                  {tags.map((tag,index)=>{
+                    return <div className={"card-tags"} key={index}>#{tag}</div>
+                    console.log(tag)})}
+                 
+                   
                   </CardContent>
 
                 </Card>
