@@ -52,8 +52,12 @@ class Header extends Component {
       <div>
         <Navbar>
           {/* <Navbar.Header> */}
+  
             <Navbar.Brand>
-            <Link to="/users"> My App</Link>
+            <Link to="/upload-image"> Upload Image</Link>
+            </Navbar.Brand>
+            <Navbar.Brand>
+            <Link to="/search"> Search Image</Link>
             </Navbar.Brand>
             {/* <Navbar.Brand>
               <Link to="/users"> Users </Link>
@@ -61,9 +65,7 @@ class Header extends Component {
             <Navbar.Brand>
               <Link to="/bank-details"> Bank </Link>
             </Navbar.Brand> */}
-            <Navbar.Brand>
-              <Link to="/add-user"> Add New User </Link>
-            </Navbar.Brand>
+         
             {/* <Navbar.Brand>
               <Link to="/operations"> Account Operations </Link>
             </Navbar.Brand>

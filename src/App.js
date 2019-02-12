@@ -5,10 +5,12 @@ import Header from "./components/header/header";
 import { BrowserRouter, Link, Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import UsersPage from "./components/users/users-page"
-import User from "./components/users/user"
+// import UsersPage from "./components/users/users-page"
+// import User from "./components/users/user"
 import { allActions } from "./redux/index";
-import AddUser from './components/users/add-user';
+// import AddUser from './components/users/add-user';
+import UploadImage from './components/images/upload-image';
+import SearchImage from "./components/images/search-image";
 
 class App extends Component {
 constructor(props){
@@ -25,33 +27,15 @@ super(props)
 
               {/* routes */}
             <Switch>
-              <Route key="users" path="/users" component={UsersPage} />
-              <Route
-                key="user"
-                exact={true}
-                path="/user/:id"
-                component={User}
+        
+                 <Route
+                key="upload-image"
+                path="/upload-image"
+                component={UploadImage}
               />
-              {/* <Route key="operations" path="/operations" component={accountOperation} />
-              <Route key="login" path="/login" component={Login} />
-              <Route key="order" path="/order-check" component={checkOrder} />
-              <Route
-                key="bank-details"
-                path="/bank-details"
-                component={BankDetails}
-              /> */}
-              <Route
-                key="add-user"
-                path="/add-user"
-                component={AddUser}
-              />
-              {/* <Route
-                key="account"
-                exact={true}
-                path="/account/:id"
-                component={Account}
-              /> */}
-              <Redirect from="/" to="/users" />
+              <Route key="search" path="/search" component={SearchImage} />
+          
+              <Redirect from="/" to="/" />
             </Switch>
           </div>
       </div>
