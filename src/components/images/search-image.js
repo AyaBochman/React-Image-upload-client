@@ -17,6 +17,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 const imgUrl = "http://localhost:2200/pictures"
 
 
@@ -33,9 +35,10 @@ const styles = theme => ({
     maxWidth: 400,
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200
+    position: "absolute",
+    left: -90,
+    width: 200,
+    
   },
   dense: {
     marginTop: 19
@@ -55,32 +58,32 @@ class SearchImage extends Component {
     super(props);
 
     this.state = {
-        search: null,
-        searchResult: null
- 
+      search: null,
+      searchResult: null
+
     };
 
   }
-  
+
   handleInputChange = e => {
 
     this.setState({
-        search:  e.target.value
+      search: e.target.value
     });
 
   };
 
-  handleSearch = () =>{
+  handleSearch = () => {
     let search = this.state.search;
     console.log("your search", search)
     axios
-      .post(`http://localhost:2200/pictures/searchImage`, {search})
+      .post(`http://localhost:2200/pictures/searchImage`, { search })
       .then(res => {
-          console.log("result from server")
-          let searchResult = res.data
-          this.setState({
-              searchResult: searchResult
-          })
+        console.log("result from server")
+        let searchResult = res.data
+        this.setState({
+          searchResult: searchResult
+        })
         console.log(searchResult)
       })
   }
@@ -92,45 +95,63 @@ class SearchImage extends Component {
     return (
       <div>
         <h2>Search for Image</h2>
-        <br/>
-        <TextField
-          id="search"
-          name="search"
-          label="Search"
-          className={classes.textField}
-        //   value={this.state.userId}
-          onChange={this.handleInputChange}
-          margin="normal"
-        />
-        <Button variant="contained" color="secondary" className={classes.button}
-        onClick={this.handleSearch}>Search</Button>
-        <div className={"row"}>
-  {this.state.searchResult && this.state.searchResult.map((searchedItem,index)=>{
-    //   return <img src={`searchedItem.path`}></img>
-      let tags = searchedItem.tags
-      let displayTags = tags.join("#")
-      console.log(searchedItem.path)
-      console.log(displayTags)
-      // <div key={index}>tags:{displayTags}</div> 
-      // return <img key={index} src={`${imgUrl}/${searchedItem.path}`} />
-      return <div className={"col-sm-3"}>
-      <Card className={classes.card}>
-      <CardMedia
-        className={classes.media}
-        image={`${imgUrl}/${searchedItem.path}`}
-       
-      />
-      <CardContent>
-      {displayTags}
-      </CardContent>
+        <br />
+        <div className={"container"}>
+          <div className={"row"}>
+            <div className={"col-md-6"}>
+              <FontAwesomeIcon icon="hashtag" size="2x" className={"hashtag"}/>
+            </div>
+            <div className={"col-md-6"}>
+              <TextField
+                id="search"
+                name="search"
+                label="Search"
+                className={classes.textField}
+                //   value={this.state.userId}
+                onChange={this.handleInputChange}
+                margin="normal"
+              />
+            </div>
 
-    </Card>
-    </div>
-    
-   
-  })}
-      </div>
-      
+          </div>
+        </div>
+
+
+        <br />
+        <br/>
+        <br/>
+        <Button variant="contained" color="secondary" className={classes.button}
+          onClick={this.handleSearch}>Search</Button>
+        <div className={"container"}>
+
+          <div className={"row"}>
+            {this.state.searchResult && this.state.searchResult.map((searchedItem, index) => {
+              //   return <img src={`searchedItem.path`}></img>
+              let tags = searchedItem.tags
+              let displayTags = tags.join("#")
+              console.log(searchedItem.path)
+              console.log(displayTags)
+              // <div key={index}>tags:{displayTags}</div> 
+              // return <img key={index} src={`${imgUrl}/${searchedItem.path}`} />
+              return <div className={"col-sm-3"}>
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.media}
+                    image={`${imgUrl}/${searchedItem.path}`}
+
+                  />
+                  <CardContent>
+                    {displayTags}
+                  </CardContent>
+
+                </Card>
+              </div>
+
+
+            })}
+          </div>
+        </div>
+
       </div>
     );
   }
@@ -142,7 +163,7 @@ SearchImage.propTypes = {
 
 function mapStateToProps(state) {
   return {
-//   users: state.users
+    //   users: state.users
   };
 }
 

@@ -5,12 +5,18 @@ import Header from "./components/header/header";
 import { BrowserRouter, Link, Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-// import UsersPage from "./components/users/users-page"
-// import User from "./components/users/user"
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHashtag } from '@fortawesome/free-solid-svg-icons'
+
+
+
 import { allActions } from "./redux/index";
 // import AddUser from './components/users/add-user';
 import UploadImage from './components/images/upload-image';
 import SearchImage from "./components/images/search-image";
+library.add(faHashtag)
 
 class App extends Component {
 constructor(props){
