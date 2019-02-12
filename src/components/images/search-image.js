@@ -12,12 +12,25 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-// import { accountAdded } from "../../redux/actions";
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+
+const imgUrl = "http://localhost:2200/pictures"
+
 
 const styles = theme => ({
   container: {
     display: "flex",
     flexWrap: "wrap"
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%', // 16:9
+  },
+  card: {
+    maxWidth: 400,
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -32,6 +45,9 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit
+  },
+  actions: {
+    display: 'flex',
   }
 });
 class SearchImage extends Component {
@@ -88,16 +104,32 @@ class SearchImage extends Component {
         />
         <Button variant="contained" color="secondary" className={classes.button}
         onClick={this.handleSearch}>Search</Button>
+        <div className={"row"}>
   {this.state.searchResult && this.state.searchResult.map((searchedItem,index)=>{
     //   return <img src={`searchedItem.path`}></img>
       let tags = searchedItem.tags
-      let displayTags = tags.join(",")
+      let displayTags = tags.join("#")
       console.log(searchedItem.path)
-      return <div key={index}>tags:{displayTags}</div> &&
-      <img src={searchedItem.path}></img>
+      console.log(displayTags)
+      // <div key={index}>tags:{displayTags}</div> 
+      // return <img key={index} src={`${imgUrl}/${searchedItem.path}`} />
+      return <div className={"col-sm-3"}>
+      <Card className={classes.card}>
+      <CardMedia
+        className={classes.media}
+        image={`${imgUrl}/${searchedItem.path}`}
+       
+      />
+      <CardContent>
+      {displayTags}
+      </CardContent>
+
+    </Card>
+    </div>
+    
    
   })}
-      
+      </div>
       
       </div>
     );

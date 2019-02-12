@@ -86,10 +86,11 @@ class UploadImage extends Component {
     return (
       <div>
         <h2> Add New Image </h2>
-        {/* <form enctype="multipart/form-data"> */}
+        <form enctype="multipart/form-data">
         <input type="file" onChange={this.handleChange}/>
         <Button variant="contained" color="primary" className={classes.button}
         onClick={this.handleUpload}>Upload</Button>
+        </form>
   <br/>
         <TextField
           id="tags"
