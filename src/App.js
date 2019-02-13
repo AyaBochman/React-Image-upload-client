@@ -3,20 +3,19 @@ import './App.css';
 // import logo from './logo.svg';
 import Header from "./components/header/header";
 import { BrowserRouter, Link, Switch, Route, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHashtag } from '@fortawesome/free-solid-svg-icons'
+import {faUpload} from '@fortawesome/free-solid-svg-icons'
+import {faSearch} from '@fortawesome/free-solid-svg-icons'
 
 
-
-import { allActions } from "./redux/index";
 // import AddUser from './components/users/add-user';
 import UploadImage from './components/images/upload-image';
 import SearchImage from "./components/images/search-image";
-library.add(faHashtag)
+library.add(faHashtag,faUpload,faSearch)
+
 
 class App extends Component {
 constructor(props){
@@ -51,26 +50,7 @@ super(props)
 }
 
 
-function mapStateToProps(state) {
-  return {
-    users: state.users || [],
-   
-    
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(
-      {
-     
-        getUsers: allActions.getUsersReq
-
-      },
-      dispatch
-    )
-  };
-}
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+
+export default App;

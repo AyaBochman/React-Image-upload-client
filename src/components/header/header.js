@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+
 import { BrowserRouter, Link, Switch, Route, Redirect } from "react-router-dom";
 import { MenuItem, Navbar, Nav, NavItem } from "react-bootstrap";
 import { withStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
+
 import { isPromiseAlike } from "q";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   container: {
@@ -35,14 +35,7 @@ class Header extends Component {
     this.state = { }
   }
 
-  componentWillReceiveProps(nextProps){
-      // console.log(this.props.isAuth)
-    // this.setState({
-    //   currentUser: nextProps.currentUser,
-    //   isAuth: nextProps.isAuth
-    // });
-    
-  }
+
 
   render() {
 
@@ -50,51 +43,29 @@ class Header extends Component {
  
     return (
       <div>
-      <div className={"container"}>
-        <Navbar>
-          {/* <Navbar.Header> */}
+      <div className={"container head"}>
+      <div className={"row"}>
+       <Navbar className={"nav"}>
+
   
             <Navbar.Brand>
-            <Link to="/upload-image"> Upload Image</Link>
+            
+            <Button variant={"outlined"}color={"primary"}><Link className={"navlink"} to="/upload-image"> Upload Image</Link></Button>
+            
             </Navbar.Brand>
             <Navbar.Brand>
-            <Link to="/search"> Search Image</Link>
+            <Button variant={"outlined"}color={"secondary"}> <Link className={"navlink"} to="/search"> Search Image</Link></Button>
             </Navbar.Brand>
-            {/* <Navbar.Brand>
-              <Link to="/users"> Users </Link>
-            </Navbar.Brand>
-            <Navbar.Brand>
-              <Link to="/bank-details"> Bank </Link>
-            </Navbar.Brand> */}
-         
-            {/* <Navbar.Brand>
-              <Link to="/operations"> Account Operations </Link>
-            </Navbar.Brand>
-            <Navbar.Brand>
-              <Link to="/order-check"> Order Check </Link>
-            </Navbar.Brand> */}
-          {/* </Navbar.Header> */}
-          {/* {this.state.currentUser.length > 0 &&  <h3>Hello {this.state.currentUser}</h3>} */}
- 
+
          
         </Navbar>
+      </div>
+       
         </div>
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
 
-  return {
- 
-
-  };
-}
-
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,//read from state
-    //pass to state
-  )(Header)
-);
+export default withStyles(styles)(Header);

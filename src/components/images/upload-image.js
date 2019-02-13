@@ -3,16 +3,14 @@ import { BrowserRouter, Link, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
+
 import TextField from "@material-ui/core/TextField";
 import { withRouter } from "react-router-dom";
-import { allActions } from "../../redux/index";
-import axios from "axios";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 
-// import { accountAdded } from "../../redux/actions";
+import axios from "axios";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 const styles = theme => ({
   container: {
@@ -40,25 +38,42 @@ class UploadImage extends Component {
 
     this.state = {
       selectedFile: null,
-      tags: null,
-      displayFile: null
+      tags: "",
+      displayFile: null,
+      error: false,
+      errorText:"",
+      success: false,
+      successText:""
  
     };
 
   }
+
+
+
+ 
+  componentDidUpdate(){
+    console.log("component did update")
+  }
+
   handleChange = e =>{
+    if(e.target.files[0]){
       this.setState({
           selectedFile: e.target.files[0],
           displayFile: URL.createObjectURL(e.target.files[0])
+          //creates blob
       })
-      console.log(e.target.files[0].name)
+    }
+      
+    
   }
 
   
   handleInputChange = e => {
 
     this.setState({
-        tags:  e.target.value
+        tags:  e.target.value,
+        error: false
     });
 
   };
@@ -66,19 +81,39 @@ class UploadImage extends Component {
   handleUpload = () =>{
     let tags = this.state.tags
 
-    console.log(tags)
-    const data = new FormData()
- 
-    console.log(data)
+   
+    if(tags && this.state.selectedFile){
+  const data = new FormData()
+
     data.append('file', this.state.selectedFile, this.state.selectedFile.name)
     data.append('tags', tags)
 
     axios
       .post(`http://localhost:2200/pictures/uploadImage`, data)
       .then(res => {
-        
+        this.setState({
+          selectedFile: null,
+          tags: "",
+          displayFile:null,
+          success: true,
+          successText: `Image ${this.state.selectedFile.name} successfully uploaded!`
+        })
+
+        setTimeout(() => {
+          this.setState({
+            success: false
+          })
+        }, 2000);
         console.log(res.statusText)
       })
+
+    }else{
+      this.setState({
+        error: true,
+        errorText: "*You didn't choose image/tags"
+      })
+    }
+  
   }
 
 
@@ -88,27 +123,43 @@ class UploadImage extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <h2> Add New Image </h2>
-        <form enctype="multipart/form-data">
-        <input type="file" onChange={this.handleChange}/>
+      <br/>
+        <h2 className={"title"}>Upload New Image </h2>
         <br/>
+        {/* <form encType="multipart/form-data"> */}
+        
+            <label className={"fileContainer"}>
+              <FontAwesomeIcon icon="upload" size="2x" className={"upload"}/>
+              <input type="file" onChange={this.handleChange}/>
+             </label>
+                
+            
+   
+        <br/>
+         {this.state.selectedFile && <small>{this.state.selectedFile.name}</small>}
+         <br/>
         <img className={"image-display"} src={this.state.displayFile}/>
+      {this.state.success && <small className={"success"}>{this.state.successText}</small>}
         <br/>
     
-        </form>
-  <br/>
+        {/* </form> */}
+
         <TextField
           id="tags"
           name="tags"
-          label="Tags"
+          label="Add some tags"
           className={classes.textField}
-        //   value={this.state.userId}
+          value={this.state.tags}
           onChange={this.handleInputChange}
           margin="normal"
         />
-  <br/>
+          <br/>
+          {this.state.error && <small className={"error"}>{this.state.errorText}</small>}
+          <br/>
           <Button variant="contained" color="primary" className={classes.button}
         onClick={this.handleUpload}>Upload</Button>
+        <br/>
+   
       </div>
     );
   }
@@ -118,28 +169,9 @@ UploadImage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state) {
-  return {
-//   users: state.users
-  };
-}
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(
-      {
-        // addingUser: allActions.addNewUser
-      },
-      dispatch
-    )
-  };
-}
 
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(UploadImage)
-);
+export default withStyles(styles)(UploadImage)
+
 
 

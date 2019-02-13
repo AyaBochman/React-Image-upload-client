@@ -3,14 +3,12 @@ import { BrowserRouter, Link, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
+
 import TextField from "@material-ui/core/TextField";
 import { withRouter } from "react-router-dom";
-import { allActions } from "../../redux/index";
+
 import axios from "axios";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+
 
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -28,12 +26,12 @@ const styles = theme => ({
     flexWrap: "wrap"
   },
   media: {
-    height: 0,
+    height: 200,
     paddingTop: '56.25%', // 16:9
   },
   card: {
     maxWidth: 400,
-    height: 250
+    height: 300
   },
   textField: {
     position: "absolute",
@@ -61,44 +59,77 @@ class SearchImage extends Component {
     this.state = {
       search: null,
       searchResult: null,
-      loading: false
+      loading: false,
+      error: false
 
     };
 
   }
 
-  // componentDidMount(){
 
-  // }
 
   handleInputChange = e => {
 
+
     this.setState({
-      search: e.target.value
+      search: e.target.value,
+      error: false,
+      errorText: "",
+     
     });
+
+if(e.target.value == ""){
+  this.setState({
+     searchResult: null,
+      loading: false
+  })
+}
+ 
 
   };
 
   handleSearch = () => {
-    this.setState({
+     let search = this.state.search;
+     if(search){
+      this.setState({
       loading: true,
       searchResult: null
     })
-    let search = this.state.search;
-    console.log("your search", search)
-    axios
+
+      axios
       .post(`http://localhost:2200/pictures/searchImage`, { search })
       .then(res => {
         console.log("result from server")
         let searchResult = res.data
-        console.log(searchResult)
+        if(searchResult.length > 0){
         setTimeout(() => {
           this.setState({
           searchResult: searchResult
         })
         }, 1500);
+        }else{
+          setTimeout(() => {
+             this.setState({
+            loading: false,
+            error: true,
+            errorText:"sorry, tags not found"
+          })
+          }, 1000);
+         
+        }
         
       })
+
+     }else{
+       this.setState({
+         error: true,
+         errorText:"*must enter search value"
+       })
+     }
+ 
+   
+    console.log("your search", search)
+   
 
   }
 
@@ -108,7 +139,8 @@ class SearchImage extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <h2>Search for Image</h2>
+        <br/>
+        <h2 className={"title"}>Search for Image</h2>
         <br />
         <div className={"container"}>
           <div className={"row"}>
@@ -119,7 +151,7 @@ class SearchImage extends Component {
               <TextField
                 id="search"
                 name="search"
-                label="Search"
+                label="Search tags"
                 className={classes.textField}
            
                 onChange={this.handleInputChange}
@@ -131,16 +163,22 @@ class SearchImage extends Component {
         </div>
 
 
-        <br />
         <br/>
         <br/>
+      {this.state.error && <small className={"error"}>{this.state.errorText}</small>}
+      
+         
+         <br/>
         <Button variant="contained" color="secondary" className={classes.button}
-          onClick={this.handleSearch}>Search</Button>
-
+          onClick={this.handleSearch}>Search &nbsp;<FontAwesomeIcon icon="search" size="2x" className={"search"}/></Button>
+         
+           <br/>
+             <br/>
+    {!this.state.searchResult && this.state.loading && <div className={"lds-roller"}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>}
         <div className={"container"}>
-{!this.state.searchResult && this.state.loading && <div className={"lds-roller"}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>}
+
           <div className={"row"}>
-          
+        
             {this.state.searchResult && this.state.searchResult.map((searchedItem, index) => {
             
               let tags = searchedItem.tags
@@ -177,28 +215,8 @@ SearchImage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state) {
-  return {
-    //   users: state.users
-  };
-}
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(
-      {
-        // addingUser: allActions.addNewUser
-      },
-      dispatch
-    )
-  };
-}
 
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(SearchImage)
-);
+export default withStyles(styles)(SearchImage);
 
 
