@@ -60,7 +60,9 @@ class UploadImage extends Component {
     if(e.target.files[0]){
       this.setState({
           selectedFile: e.target.files[0],
-          displayFile: URL.createObjectURL(e.target.files[0])
+          displayFile: URL.createObjectURL(e.target.files[0]),
+          error: false,
+          errorText: ""
           //creates blob
       })
     }
