@@ -52,6 +52,12 @@ const styles = theme => ({
     display: 'flex',
   }
 });
+
+const apiPath =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://image-upload-tag-server.herokuapp.com";
+
 class SearchImage extends Component {
   constructor(props) {
     super(props);
@@ -97,7 +103,7 @@ if(e.target.value == ""){
     })
 
       axios
-      .post(`http://localhost:2200/pictures/searchImage`, { search })
+      .post(`${apiPath}/pictures/searchImage`, { search })
       .then(res => {
         console.log("result from server")
         let searchResult = res.data

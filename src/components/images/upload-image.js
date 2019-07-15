@@ -32,6 +32,12 @@ const styles = theme => ({
     margin: theme.spacing.unit
   }
 });
+
+const apiPath =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://image-upload-tag-server.herokuapp.com";
+
 class UploadImage extends Component {
   constructor(props) {
     super(props);
@@ -91,7 +97,7 @@ class UploadImage extends Component {
     data.append('tags', tags)
 
     axios
-      .post(`http://localhost:2200/pictures/uploadImage`, data)
+      .post(`${apiPath}/pictures/uploadImage`, data)
       .then(res => {
         this.setState({
           selectedFile: null,
