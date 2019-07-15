@@ -18,6 +18,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const imgUrl = "http://localhost:2200/pictures"
+const pathImg = "https://image-upload-tag-server.herokuapp.com/pictures"
 
 
 const styles = theme => ({
@@ -57,6 +58,8 @@ const apiPath =
   window.location.hostname === "localhost"
     ? "http://localhost:3000"
     : "https://image-upload-tag-server.herokuapp.com";
+
+    const path ="https://image-upload-tag-server.herokuapp.com"
 
 class SearchImage extends Component {
   constructor(props) {
@@ -103,7 +106,7 @@ if(e.target.value == ""){
     })
 
       axios
-      .post(`${apiPath}/pictures/searchImage`, { search })
+      .post(`${path}/pictures/searchImage`, { search })
       .then(res => {
         console.log("result from server")
         let searchResult = res.data
@@ -194,7 +197,7 @@ if(e.target.value == ""){
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.media}
-                    image={`${imgUrl}/${searchedItem.path}`}
+                    image={`${pathImg}/${searchedItem.path}`}
 
                   />
                   <CardContent>

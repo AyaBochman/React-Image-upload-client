@@ -38,6 +38,8 @@ const apiPath =
     ? "http://localhost:3000"
     : "https://image-upload-tag-server.herokuapp.com";
 
+const path ="https://image-upload-tag-server.herokuapp.com"
+
 class UploadImage extends Component {
   constructor(props) {
     super(props);
@@ -97,7 +99,7 @@ class UploadImage extends Component {
     data.append('tags', tags)
 
     axios
-      .post(`${apiPath}/pictures/uploadImage`, data)
+      .post(`${path}/pictures/uploadImage`, data)
       .then(res => {
         this.setState({
           selectedFile: null,
